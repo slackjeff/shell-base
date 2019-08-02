@@ -2,11 +2,12 @@
 # Template orgulhosamente criado por (Shell-Base)
 
 #-----------HEADER-------------------------------------------------------------|
-# PROGRAMA          : Shell-Base
-# LICENÇA           : GPL3
-# HOMEPAGE          : https://slackjeff.github.io 
 # AUTOR             : Jefferson Rocha <lrcjefferson@gmail.com>
+# HOMEPAGE          : https://slackjeff.github.io 
 # DATA-DE-CRIAÇÃO   : 2018-03-26
+# PROGRAMA          : Shell-Base
+# VERSÃO            : 1.0.0
+# LICENÇA           : GPL3
 # PEQUENA-DESCRIÇÃO : Programa para criação de template, deixe tudo organizado 
 #                     como deve ser!
 #                     Seus programas serão mais profissionais com o Shell-Base.
@@ -35,12 +36,12 @@ INFORMAÇÃO
 
     Você sabe o poder do Shell? espero que sim! Vou te passar algumas dicas valiosas
     para deixar seu programa com um grande diferencial, afinal queremos criar programas
-    e não scripts não é? scripts são descartáveis... Programas não.
+    e não scripts não é? Scripts são descartáveis... Programas não.
 
 
 VÁRIAVEIS DENTRO DE FUNÇÕES
 
-    Quando você cria uma váriavel dentro de uma função utilize sempre local na frente,
+    Quando você criar uma váriavel dentro de uma função utilize sempre local na frente,
     você não quer sujar o sistema do usuário não é?
     Utilizando o local na frente da váriavel, como o próprio nome sugere, vocẽ cria uma
     váriavel local, o que é mais correto de se fazer! exemplos:
@@ -362,12 +363,14 @@ base(){
 cat << EOF > "${template}${interpretador}"
 #!/usr/bin/env $interpretador
 # Template orgulhosamente criado por (Shell-Base)
+
 #-----------HEADER-------------------------------------------------------------|
-# PROGRAMA          : $nome_do_programa
-# LICENÇA           : $licenca
-# HOMEPAGE          : $homepage 
 # AUTOR             : $autor <$e_mail>
+# HOMEPAGE          : $homepage 
 # DATA-DE-CRIAÇÃO   : $data 
+# PROGRAMA          : $nome_do_programa
+# VERSÃO            : $versao
+# LICENÇA           : $licenca
 # PEQUENA-DESCRIÇÃO : $pequena_descricao
 #
 # CHANGELOG :
@@ -403,28 +406,28 @@ EOF
 
 
 criar(){
-data=$(date "+%d/%m/%Y ás %H:%M")
-# Vetor contendo o questionario que será passado para o usuario.
-informacoes=("interpretador" "autor" "e_mail" "nome_do_programa" "pequena_descricao" "licenca" "homepage")
+    data=$(date "+%d/%m/%Y às %H:%M")
+    # Vetor contendo o questionario que será passado para o usuario.
+    informacoes=("autor" "e_mail" "homepage" "nome_do_programa" "versao"  "licenca" "interpretador" "pequena_descricao")
 
-local texto="${vermelho}Preencha todos os dados corretamente!
+    local texto="${vermelho}Preencha todos os dados corretamente!
 Assim você não perde seu tempo depois.
 O arquivo gerado terá o nome ${branco}template.INTERPRETADOR${fecha} ${vermelho}no diretório atual.\n\n${fecha}"
 
-printf %b "$texto"
-for info in "${informacoes[@]}"; do
-    read -ep "${info[@]}: " ${info[@]}
-done
+    printf %b "$texto"
+    for info in "${informacoes[@]}"; do
+        read -ep "${info[@]}: " ${info[@]}
+    done
 
-# Chamando e testando a função para criar template de acordo
-# com os dados passados.
-if base; then
-    printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}${interpretador}${fecha}\n"
-      exit 0
-else
-    printf %b "${vermelho}Não consegui criar o arquivo, tente novamente...\n${fecha}"    
-    exit 1
-fi
+    # Chamando e testando a função para criar template de acordo
+    # com os dados passados.
+    if base; then
+        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}${interpretador}${fecha}\n"
+          exit 0
+    else
+        printf %b "${vermelho}Não consegui criar o arquivo, tente novamente...\n${fecha}"    
+        exit 1
+    fi
 }
 
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
