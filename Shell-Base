@@ -17,7 +17,7 @@
 
 
 #--------------------------------- VARIÁVEIS ---------------------------------->
-template="template."
+template="template"
 
 # Colorindo a sua vida.
 fecha="\033[m"
@@ -29,9 +29,10 @@ branco="\033[37;1m"
 
 #----------------------------------- FUNÇÕES ---------------------------------->
 
-dicas(){
-clear
-cat | less << EOF
+dicas()
+{
+    clear
+    cat | less << EOF
 INFORMAÇÃO
 
     Você sabe o poder do Shell? espero que sim! Vou te passar algumas dicas valiosas
@@ -334,9 +335,10 @@ EOF
 
 
 
-ajuda(){
-clear
-cat << EOF
+ajuda()
+{
+    clear
+    cat << EOF
 OPÇÕES DISPONIVEIS: 
 
      -c ou --criar
@@ -350,17 +352,17 @@ OPÇÕES DISPONIVEIS:
         Texto contendo algumas dicas de programação Shell.
  
 EOF
-
 }
 
 
 
 base(){
-# A base de todo o programa se encontra aqui
-# Caso queira modificar, não esqueça de adicionar
-# tambem no vetor.
-
-cat << EOF > "${template}${interpretador}"
+    # A base de todo o programa se encontra aqui
+    # Caso queira modificar, não esqueça de adicionar
+    # tambem no vetor.
+    
+    
+cat << EOF > "${template}.${interpretador}"
 #!/usr/bin/env $interpretador
 # Template orgulhosamente criado por (Shell-Base)
 
@@ -405,11 +407,12 @@ EOF
 }
 
 
-criar(){
+criar()
+{
     data=$(date "+%d/%m/%Y às %H:%M")
     # Vetor contendo o questionario que será passado para o usuario.
-    informacoes=("autor" "e_mail" "homepage" "nome_do_programa" "versao"  "licenca" "interpretador" "pequena_descricao")
-
+    informacoes=("autor" "e_mail" "homepage" "nome_do_programa" "interpretador" "versao" "licenca" "pequena_descricao")
+    
     local texto="${vermelho}Preencha todos os dados corretamente!
 Assim você não perde seu tempo depois.
 O arquivo gerado terá o nome ${branco}template.INTERPRETADOR${fecha} ${vermelho}no diretório atual.\n\n${fecha}"
@@ -419,10 +422,12 @@ O arquivo gerado terá o nome ${branco}template.INTERPRETADOR${fecha} ${vermelho
         read -ep "${info[@]}: " ${info[@]}
     done
 
+    [[ "${nome_do_programa}" = '' ]] || template="${nome_do_programa}"
+
     # Chamando e testando a função para criar template de acordo
     # com os dados passados.
     if base; then
-        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}${interpretador}${fecha}\n"
+        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}.${interpretador}${fecha}\n"
           exit 0
     else
         printf %b "${vermelho}Não consegui criar o arquivo, tente novamente...\n${fecha}"    
