@@ -1,53 +1,48 @@
 #!/usr/bin/env bash
 # Template orgulhosamente criado por (Shell-Base)
-#-----------HEADER-----------------------------------------------------------------|
-#AUTOR
-#  Jefferson Rocha <lrcjefferson@gmail.com>
+
+#-----------HEADER-------------------------------------------------------------|
+# AUTOR             : Jefferson Rocha <lrcjefferson@gmail.com>
+# HOMEPAGE          : https://slackjeff.github.io 
+# DATA-DE-CRIAÇÃO   : 2018-03-26
+# PROGRAMA          : Shell-Base
+# VERSÃO            : 1.0.0
+# LICENÇA           : GPL3
+# PEQUENA-DESCRIÇÃO : Programa para criação de template, deixe tudo organizado 
+#                     como deve ser!
+#                     Seus programas serão mais profissionais com o Shell-Base.
+# CHANGELOG :
 #
-#PROGRAMA
-#  Shell-Base
-#
-#PEQUENA-DESCRIÇÃO
-#  Programa para criação de template, deixe tudo organizado como deve ser!
-#  Seus programas serão mais profissionais com o Shell-Base
-#
-#LICENÇA
-#  GPL3
-#
-#HOMEPAGE
-#  https://slackjeff.github.io
-#
-#CHANGELOG
-#
-#----------------------------------------------------------------------------------|
+#------------------------------------------------------------------------------|
 
 
-#------VARS--------->
-template="template."
+#--------------------------------- VARIÁVEIS ---------------------------------->
+template="template"
 
 # Colorindo a sua vida.
 fecha="\033[m"
 verde="\033[32;1m"
 vermelho="\033[31;1m"
 branco="\033[37;1m"
-#-------------------->
+#------------------------------- FIM-VARIÁVEIS --------------------------------<
 
 
-#------FUNCTIONS----------->
+#----------------------------------- FUNÇÕES ---------------------------------->
 
-dicas(){
-clear
-cat | less << EOF
+dicas()
+{
+    clear
+    cat | less << EOF
 INFORMAÇÃO
 
     Você sabe o poder do Shell? espero que sim! Vou te passar algumas dicas valiosas
     para deixar seu programa com um grande diferencial, afinal queremos criar programas
-    e não scripts não é? scripts são descartáveis... Programas não.
+    e não scripts não é? Scripts são descartáveis... Programas não.
 
 
 VÁRIAVEIS DENTRO DE FUNÇÕES
 
-    Quando você cria uma váriavel dentro de uma função utilize sempre local na frente,
+    Quando você criar uma váriavel dentro de uma função utilize sempre local na frente,
     você não quer sujar o sistema do usuário não é?
     Utilizando o local na frente da váriavel, como o próprio nome sugere, vocẽ cria uma
     váriavel local, o que é mais correto de se fazer! exemplos:
@@ -340,9 +335,10 @@ EOF
 
 
 
-ajuda(){
-clear
-cat << EOF
+ajuda()
+{
+    clear
+    cat << EOF
 OPÇÕES DISPONIVEIS: 
 
      -c ou --criar
@@ -356,59 +352,54 @@ OPÇÕES DISPONIVEIS:
         Texto contendo algumas dicas de programação Shell.
  
 EOF
-
 }
 
 
 
 base(){
-# Base de todo o programa se encontra aqui
-# Caso queira modificar, não esqueça de adicionar
-# tambem no vetor.
-
-cat << EOF > "${template}${interpretador}"
+    # A base de todo o programa se encontra aqui
+    # Caso queira modificar, não esqueça de adicionar
+    # tambem no vetor.
+    
+    
+cat << EOF > "${template}.${interpretador}"
 #!/usr/bin/env $interpretador
 # Template orgulhosamente criado por (Shell-Base)
-#-----------HEADER-----------------------------------------------------------------|
-#AUTOR
-#  $autor <$e_mail>
+
+#-----------HEADER-------------------------------------------------------------|
+# AUTOR             : $autor <$e_mail>
+# HOMEPAGE          : $homepage 
+# DATA-DE-CRIAÇÃO   : $data 
+# PROGRAMA          : $nome_do_programa
+# VERSÃO            : $versao
+# LICENÇA           : $licenca
+# PEQUENA-DESCRIÇÃO : $pequena_descricao
 #
-##DATA-DE-CRIAÇÃO
-#  $data 
+# CHANGELOG :
 #
-#PROGRAMA
-#  $nome_do_programa
+#------------------------------------------------------------------------------|
+
+#--------------------------------- VARIÁVEIS ---------------------------------->
 #
-#PEQUENA-DESCRIÇÃO
-#  $pequena_descricao
+# Aqui vão todas as váriaveis do programa.
 #
-#LICENÇA
-#  $licenca
-#
-#HOMEPAGE
-#  $homepage 
-#
-#CHANGELOG
-#
-#----------------------------------------------------------------------------------|
+#------------------------------- FIM-VARIÁVEIS --------------------------------<
 
 
-#--------VÁRIAVEIS--------->
-# Aqui vai todas as 
-# váriaveis do programa.
-#-------------------------->
 
-
-#--------FUNÇÕES----------->
+#----------------------------------- FUNÇÕES ---------------------------------->
+#
 # Funções vão aqui!
-#-------------------------->
+#
+#--------------------------------- FIM-FUNÇÕES --------------------------------<
 
-#------TESTES-------------->
-# Testes iniciais do
-# seu programa vão
-# neste bloco.
-#-------------------------->
 
+
+#---------------------------------- TESTES ------------------------------------>
+#
+# Testes iniciais do seu programa vão neste bloco.
+#
+#--------------------------------- FIM-TESTES ---------------------------------<
 
 # Programa começa aqui :)
 
@@ -416,33 +407,38 @@ EOF
 }
 
 
-criar(){
-data=$(date "+%d/%m/%Y ás %H:%M")
-# Vetor contendo o questionario que será passado para o usuario.
-informacoes=("interpretador" "autor" "e_mail" "nome_do_programa" "pequena_descricao" "licenca" "homepage")
-
-local texto="${vermelho}Preencha todos os dados corretamente!
+criar()
+{
+    data=$(date "+%d/%m/%Y às %H:%M")
+    # Vetor contendo o questionario que será passado para o usuario.
+    informacoes=("autor" "e_mail" "homepage" "nome_do_programa" "interpretador" "versao" "licenca" "pequena_descricao")
+    
+    local texto="${vermelho}Preencha todos os dados corretamente!
 Assim você não perde seu tempo depois.
 O arquivo gerado terá o nome ${branco}template.INTERPRETADOR${fecha} ${vermelho}no diretório atual.\n\n${fecha}"
 
-printf %b "$texto"
-for info in "${informacoes[@]}"; do
-    read -ep "${info[@]}: " ${info[@]}
-done
+    printf %b "$texto"
+    for info in "${informacoes[@]}"; do
+        read -ep "${info[@]}: " ${info[@]}
+    done
 
-# Chamando e testando a função para criar template de acordo
-# com os dados passados.
-if base; then
-    printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}${interpretador}${fecha}\n"
-      exit 0
-else
-    printf %b "${vermelho}Não consegui criar o arquivo, tente novamente...\n${fecha}"    
-    exit 1
-fi
+    [[ "${nome_do_programa}" = '' ]] || template="${nome_do_programa}"
+
+    # Chamando e testando a função para criar template de acordo
+    # com os dados passados.
+    if base; then
+        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}.${interpretador}${fecha}\n"
+          exit 0
+    else
+        printf %b "${vermelho}Não consegui criar o arquivo, tente novamente...\n${fecha}"    
+        exit 1
+    fi
 }
-#-------------------------->
+
+#--------------------------------- FIM-FUNÇÕES --------------------------------<
 
 
+# Programa começa aqui :)
 
 # Verificando qual parâmetro foi passado.
 case $1 in
