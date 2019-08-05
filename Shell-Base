@@ -313,7 +313,7 @@ STATUS DE SÁIDA!
     fi    
 
 
-TESTE COM CONCIENCIA!
+TESTE COM CONSCIENCIA!
   
     No interpretador bash não é correto fazer testes neste formato [ teste ], sim! se você não está usando
     o bourne shell "sh" como interpretador prefira utilizar o padrão bash [[ teste ]].
