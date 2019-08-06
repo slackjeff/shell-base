@@ -134,14 +134,14 @@ ESTÁ EM DÚVIDA? USE ASPAS.
 
 COMENTÁRIOS SÃO IMPORTANTES!
     
-    Ao contrário que muita gente fala, comentários são extremamentes importantes!
-    Não faça declarações de amor, ou falando mau do seu programa ou do mundo em geral!
-    Sim, eu sei que as vezes ficamos com ráiva por que um certo trecho de código não está
+    Ao contrário que muita gente fala, comentários são extremamente importantes!
+    Não faça declarações de amor, fale mal do seu programa ou do mundo em geral!
+    Sim, eu sei que as vezes ficamos com raiva por que um certo trecho de código não está
     funcionando, faz parte e lide com isso.
     Comentários são de extrema importância, pois assim estamos cooperando para outros programadores
     mais leigos!
-    Eles conseguiram ler com mais facilidade um bloco de código, quando ele está comentado!
-    Faça sempre comentários nas linhas de códigos mais "complicadas" isto por exemplo não
+    Eles conseguirão ler com mais facilidade um bloco de código quando ele está comentado!
+    Faça sempre comentários nas linhas de códigos mais "complicadas", isto por exemplo não
     é tão certo:
     
     # Bloca que verifica se o usuário é root
@@ -313,7 +313,7 @@ STATUS DE SÁIDA!
     fi    
 
 
-TESTE COM CONCIENCIA!
+TESTE COM CONSCIENCIA!
   
     No interpretador bash não é correto fazer testes neste formato [ teste ], sim! se você não está usando
     o bourne shell "sh" como interpretador prefira utilizar o padrão bash [[ teste ]].
