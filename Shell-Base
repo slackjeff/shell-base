@@ -6,13 +6,15 @@
 # HOMEPAGE          : https://slackjeff.github.io 
 # DATA-DE-CRIAÇÃO   : 2018-03-26
 # PROGRAMA          : Shell-Base
-# VERSÃO            : 1.0.0
+# VERSÃO            : 1.0.1
 # LICENÇA           : GPL3
 # PEQUENA-DESCRIÇÃO : Programa para criação de template, deixe tudo organizado 
 #                     como deve ser!
 #                     Seus programas serão mais profissionais com o Shell-Base.
 # CHANGELOG :
 #
+# 2019-12-12 - Vovolinux
+# - Incluída a verificação de r00t como default
 #------------------------------------------------------------------------------|
 
 
@@ -390,7 +392,17 @@ cat << EOF > "${template}.${interpretador}"
 #----------------------------------- FUNÇÕES ---------------------------------->
 #
 # Funções vão aqui!
-#
+
+# Verifica se o script está sendo executado como r00t.
+is_root()
+{
+    # é root?
+    [ "$UID" -ne "0" ] && {  
+        printf '%b' "Execute como r00t.\n"
+        exit 1
+    }
+}
+
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
 
 
@@ -398,7 +410,9 @@ cat << EOF > "${template}.${interpretador}"
 #---------------------------------- TESTES ------------------------------------>
 #
 # Testes iniciais do seu programa vão neste bloco.
-#
+
+is_root
+
 #--------------------------------- FIM-TESTES ---------------------------------<
 
 # Programa começa aqui :)
