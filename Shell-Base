@@ -468,7 +468,8 @@ criar()
     
     local texto="${vermelho}Preencha todos os dados corretamente!
 Assim você não perde seu tempo depois.
-O arquivo gerado terá o nome ${branco}nome_do_programa.extensao${fecha}.\n\n${fecha}"
+O arquivo terá o nome ${branco}nome_do_programa.extensao${fecha} 
+e será gerado na pasta atual ou no caminho informado no nome do programa.\n\n${fecha}"
 
     printf %b "$texto"
     i=0
