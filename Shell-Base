@@ -12,11 +12,14 @@
 #                     como deve ser!
 #                     Seus programas serão mais profissionais com o Shell-Base.
 # CHANGELOG :
-# 2020-04-25 - Vovolinux
+# 2020-04-26 - Vovolinux
 # - Criado o vetor contendo o questionário que será exibido para o usuário.
 # - Alterada a função criar() para exibir o questionário.
 # - Vetor 'informacoes' movido para a sessão --- VARIÁVEIS --- do script.
 # - Revisão de ortografia e gramática.
+# - Criada a função 'set_dir_template' para corrigir path do template.
+# - Incluida a variável 'dir_template' para o diretório de criação do template.
+# - Incluída a anoteção de copyright 'licenca - © yyyy - autor'
 #
 # 2019-12-13 - Vovolinux
 # - Incluída a verificação de r00t como default para os templates criados.
@@ -28,6 +31,9 @@
 
 #--------------------------------- VARIÁVEIS ---------------------------------->
 
+# Diretório para criação do template
+dir_template="$PWD"
+
 # Nome do template que será criado (Ex.: nome_do_programa.extensao)
 template="template"
 
@@ -36,11 +42,11 @@ data=$(date "+%d/%m/%Y às %H:%M")
 
 # Vetor contendo o questionário que será passado para o usuário.
 # Caso queira modificar, não esqueça de adicionar tambem no vetor 'questionario'.
-informacoes=("autor" "e_mail" "homepage" "nome_do_programa" "extensao" "interpretador" "versao" "licenca" "pequena_descricao")
+informacoes=("autor" "e_mail" "homepage" "dir_template" "nome_do_programa" "extensao" "interpretador" "versao" "licenca" "pequena_descricao")
 
 # Vetor contendo o questionário que será exibido para o usuário.
 # Caso queira modificar, não esqueça de adicionar tambem no vetor 'informacoes'.
-questionario=("Autor" "E-mail" "Homepage" "Nome do programa" "Extensao" "Interpretador" "Versão" "Licença" "Pequena descrição")
+questionario=("Autor" "E-mail" "Homepage" "Diretório do template" "Nome do programa" "Extensao" "Interpretador" "Versão" "Licença" "Pequena descrição")
 
 # Colorindo a sua vida.
 fecha="\033[m"
@@ -368,8 +374,6 @@ Texto revisado por Vovolinux <suporte@vovolinux.com.br>
 EOF
 }
 
-
-
 ajuda()
 {
     clear
@@ -390,16 +394,35 @@ EOF
 }
 
 
+# Corrige o path do template
+set_dir_template()
+{
+    # Se não informar o diretório
+    [[ "${dir_template}" = "" ]] && dir_template="$PWD"
 
+    # Substitui o ~ (til) pelo endereço absoluto da home do usuário
+    [[ "${dir_template:0:2}" = "~/" ]] && dir_template="${HOME}${dir_template: 1}" 
+
+    # Retira a barra do final
+    [[ "${dir_template: -1}" = "/" ]] && dir_template="${dir_template::-1}" 
+
+    # Cria o dir_template informado caso não exista
+    if ! [[ -d "${dir_template}" ]]; then
+        printf %b "\n"
+        mkdir -v "${dir_template}"
+    fi
+
+    # Verifica se a extensão foi informada, para incluir no nome do arquivo criado.
+    if [[ "${extensao}" != "" ]]; then
+        template="${template}.${extensao}"
+    fi    
+}
+
+# A base de todo o programa se encontra aqui
 base(){
-    # A base de todo o programa se encontra aqui
+    set_dir_template
     
-# Verifica se a extensão foi informada, para incluir no nome do arquivo criado.
-if [[ "${extensao}" != "" ]]; then
-    template="${template}.${extensao}"
-fi
-
-cat << EOF > "${template}"
+cat << EOF > "${dir_template}/${template}"
 #!/usr/bin/env $interpretador
 # Template orgulhosamente criado por (Shell-Base)
 
@@ -409,7 +432,7 @@ cat << EOF > "${template}"
 # DATA DE CRIAÇÃO   : $data 
 # PROGRAMA          : $nome_do_programa
 # VERSÃO            : $versao
-# LICENÇA           : $licenca
+# LICENÇA           : $licenca - © $(date "+%Y") - $autor
 # PEQUENA DESCRIÇÃO : $pequena_descricao
 #
 # CHANGELOG :
@@ -419,7 +442,24 @@ cat << EOF > "${template}"
 #--------------------------------- VARIÁVEIS ---------------------------------->
 #
 # Aqui vão todas as váriaveis do programa.
-#
+
+### VARIÁVEIS DO SCRIPT ###
+
+# Autor
+autor='$autor'
+
+# Programa
+programa='$nome_do_programa'
+
+# Versão
+versao='$versao'
+
+# Ano atual
+ano=$(date "+%Y")
+
+# Informação de Copyryght
+copyright="© ${ano} - ${autor}"
+
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
 
 
@@ -459,7 +499,8 @@ EOF
 permissao()
 {
     printf %b "\n"
-    chmod 755 "${template}" -v
+    printf %b "Diretorio: ${dir_template}\nArquivo: ${template}\n\n"
+    chmod 755 "${dir_template}/${template}" -v
     printf %b "\n"  
 }
 
@@ -468,7 +509,7 @@ criar()
     
     local texto="${vermelho}Preencha todos os dados corretamente!
 Assim você não perde seu tempo depois.
-O arquivo terá o nome ${branco}nome_do_programa.extensao${fecha} 
+O arquivo terá o nome ${branco}nome_do_programa.extensao${fecha}${vermelho}
 e será gerado na pasta atual ou no caminho informado no nome do programa.\n\n${fecha}"
 
     printf %b "$texto"
@@ -480,11 +521,10 @@ e será gerado na pasta atual ou no caminho informado no nome do programa.\n\n${
 
     [[ "${nome_do_programa}" = '' ]] || template="${nome_do_programa}"
 
-    # Chamando e testando a função para criar template de acordo
-    # com os dados passados.
+    # Chamando e testando a função para criar template de acordo com os dados passados.
     if base; then
         permissao
-        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}${fecha}\n"
+        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${dir_template}/${template}${fecha}\n"
           exit 0
     else
         printf %b "${vermelho}Não consegui criar o arquivo, tente novamente...\n${fecha}"    
@@ -503,5 +543,4 @@ case $1 in
     -a|--ajuda) ajuda ;; # Chamada Função.
     -d|--dicas) dicas ;; # Chamada Função.
     *) printf %b "Você pode conferir toda ajuda utilizando o parâmetro ${vermelho}-a${fecha} ou ${vermelho}--ajuda${fecha}\n"
-esac    
-    
+esac
