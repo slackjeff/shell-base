@@ -422,6 +422,10 @@ set_dir_template()
 base(){
     set_dir_template
     
+    if [[ "${interpretador}" -eq "" ]]; then
+        interpretador='bash'
+    fi
+
 cat << EOF > "${dir_template}/${template}"
 #!/usr/bin/env $interpretador
 # Template orgulhosamente criado por (Shell-Base)
@@ -455,7 +459,7 @@ programa='$nome_do_programa'
 versao='$versao'
 
 # Ano atual
-ano=$(date "+%Y")
+ano='$(date "+%Y")'
 
 # Informação de Copyryght
 copyright="© ${ano} - ${autor}"
