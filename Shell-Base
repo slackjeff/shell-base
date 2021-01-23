@@ -426,6 +426,8 @@ base(){
         interpretador='bash'
     fi
 
+    ano=$(date "+%Y")
+
 cat << EOF > "${dir_template}/${template}"
 #!/usr/bin/env $interpretador
 # Template orgulhosamente criado por (Shell-Base)
@@ -459,9 +461,9 @@ programa='$nome_do_programa'
 versao='$versao'
 
 # Ano atual
-ano='$(date "+%Y")'
+ano='${ano}'
 
-# Informação de Copyryght
+# Informação de Copyright
 copyright="© ${ano} - ${autor}"
 
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
