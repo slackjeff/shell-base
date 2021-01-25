@@ -6,13 +6,18 @@
 # HOMEPAGE          : https://slackjeff.github.io 
 # DATA-DE-CRIAÇÃO   : 2018-03-26
 # PROGRAMA          : Shell-Base
-# VERSÃO            : 1.0.0
+# VERSÃO            : 1.0.1
 # LICENÇA           : GPL3
 # PEQUENA-DESCRIÇÃO : Programa para criação de template, deixe tudo organizado 
 #                     como deve ser!
 #                     Seus programas serão mais profissionais com o Shell-Base.
 # CHANGELOG :
 #
+# 2019-12-13 - Vovolinux
+# - Incluída a verificação de r00t como default para os templates criados.
+# - Incluída a variavel 'extensao' para permitir a criação de scripts sem uma
+#   extensão ou com uma extensão diferente da variável 'interpretador'.
+# - Alteração para permissão de execução do script criado para 755.
 #------------------------------------------------------------------------------|
 
 
@@ -360,9 +365,14 @@ base(){
     # A base de todo o programa se encontra aqui
     # Caso queira modificar, não esqueça de adicionar
     # tambem no vetor.
-    
-    
-cat << EOF > "${template}.${interpretador}"
+
+
+# Verifica se a extensão foi informada, para incluir no nome do arquivo criado.
+if [[ "${extensao}" != "" ]]; then
+    template="${template}.${extensao}"
+fi
+
+cat << EOF > "${template}"
 #!/usr/bin/env $interpretador
 # Template orgulhosamente criado por (Shell-Base)
 
@@ -390,7 +400,17 @@ cat << EOF > "${template}.${interpretador}"
 #----------------------------------- FUNÇÕES ---------------------------------->
 #
 # Funções vão aqui!
-#
+
+# Verifica se o script está sendo executado como r00t.
+is_root()
+{
+    # é root?
+    [[ "\$UID" -ne "0" ]] && {  
+        printf '%b' "Execute como r00t.\n"
+        exit 1
+    }
+}
+
 #--------------------------------- FIM-FUNÇÕES --------------------------------<
 
 
@@ -398,7 +418,9 @@ cat << EOF > "${template}.${interpretador}"
 #---------------------------------- TESTES ------------------------------------>
 #
 # Testes iniciais do seu programa vão neste bloco.
-#
+
+is_root
+
 #--------------------------------- FIM-TESTES ---------------------------------<
 
 # Programa começa aqui :)
@@ -406,16 +428,23 @@ cat << EOF > "${template}.${interpretador}"
 EOF
 }
 
+# Permissão para execução do script criado
+permissao()
+{
+    printf %b "\n"
+    chmod 755 "${template}" -v
+    printf %b "\n"  
+}
 
 criar()
 {
     data=$(date "+%d/%m/%Y às %H:%M")
     # Vetor contendo o questionario que será passado para o usuario.
-    informacoes=("autor" "e_mail" "homepage" "nome_do_programa" "interpretador" "versao" "licenca" "pequena_descricao")
+    informacoes=("autor" "e_mail" "homepage" "nome_do_programa" "extensao" "interpretador" "versao" "licenca" "pequena_descricao")
     
     local texto="${vermelho}Preencha todos os dados corretamente!
 Assim você não perde seu tempo depois.
-O arquivo gerado terá o nome ${branco}template.INTERPRETADOR${fecha} ${vermelho}no diretório atual.\n\n${fecha}"
+O arquivo gerado terá o nome ${branco}template.EXTENSAO${fecha} ${vermelho}no diretório atual.\n\n${fecha}"
 
     printf %b "$texto"
     for info in "${informacoes[@]}"; do
@@ -427,7 +456,8 @@ O arquivo gerado terá o nome ${branco}template.INTERPRETADOR${fecha} ${vermelho
     # Chamando e testando a função para criar template de acordo
     # com os dados passados.
     if base; then
-        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}.${interpretador}${fecha}\n"
+        permissao
+        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${template}${fecha}\n"
           exit 0
     else
         printf %b "${vermelho}Não consegui criar o arquivo, tente novamente...\n${fecha}"    
