@@ -7,11 +7,16 @@
 # DATA DE CRIAÇÃO   : 2018-03-26
 # PROGRAMA          : Shell-Base
 # VERSÃO            : 1.0.2
+SHELL_BASE_VERSION='1.0.2'
 # LICENÇA           : GPL3
 # PEQUENA DESCRIÇÃO : Programa para criação de template, deixe tudo organizado 
 #                     como deve ser!
 #                     Seus programas serão mais profissionais com o Shell-Base.
 # CHANGELOG :
+# 2021-11-02 - Vovolinux
+# - Criada variável SHELL_BASE_VERSION para exibir a versão na ajuda;
+# - Exibindo ajuda ao chamar o Shell-Base sem argumentos.
+#
 # 2020-04-26 - Vovolinux
 # - Criado o vetor contendo o questionário que será exibido para o usuário.
 # - Alterada a função criar() para exibir o questionário.
@@ -378,6 +383,9 @@ ajuda()
 {
     clear
     cat << EOF
+---------------------
+ Shell-Base - v$SHELL_BASE_VERSION
+---------------------
 OPÇÕES DISPONIVEIS: 
 
      -c ou --criar
@@ -548,5 +556,5 @@ case $1 in
     -c|--criar) criar ;; # Chamada Função.
     -a|--ajuda) ajuda ;; # Chamada Função.
     -d|--dicas) dicas ;; # Chamada Função.
-    *) printf %b "Você pode conferir toda ajuda utilizando o parâmetro ${vermelho}-a${fecha} ou ${vermelho}--ajuda${fecha}\n"
+    *) ajuda
 esac
