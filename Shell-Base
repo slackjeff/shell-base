@@ -13,6 +13,10 @@ SHELL_BASE_VERSION='1.0.2'
 #                     como deve ser!
 #                     Seus programas serão mais profissionais com o Shell-Base.
 # CHANGELOG :
+# 2022-01-07 - Vovolinux
+# - Criada a sessão DECORATIONS TTY dentro de variáveis, com mais cores de 
+#   fonte e outras decorações para o emulador de terminal.
+#
 # 2021-11-02 - Vovolinux
 # - Criada variável SHELL_BASE_VERSION para exibir a versão na ajuda;
 # - Exibindo ajuda ao chamar o Shell-Base sem argumentos.
@@ -53,11 +57,47 @@ informacoes=("autor" "e_mail" "homepage" "dir_template" "nome_do_programa" "exte
 # Caso queira modificar, não esqueça de adicionar tambem no vetor 'informacoes'.
 questionario=("Autor" "E-mail" "Homepage" "Diretório do template" "Nome do programa" "Extensao" "Interpretador" "Versão" "Licença" "Pequena descrição")
 
-# Colorindo a sua vida.
-fecha="\033[m"
-verde="\033[32;1m"
-vermelho="\033[31;1m"
-branco="\033[37;1m"
+#------------------------------ DECORATIONS TTY ------------------------------->
+# SOURCES: 
+#  https://www.vivaolinux.com.br/artigo/Formatando-o-bash-com-cores-e-efeitos
+#  https://github.com/Viniciusalopes/shell-base
+
+
+# Decorating your life.
+CLOSE="\033[m"
+BOLD="\033[;1m"
+ITALIC="\033[;3m"
+UNDERLINE="\033[;4m"
+BLINKING="\033[;5m"
+REVERSE="\033[;7m"
+HIDDEN="\033[;8m"
+STRIKETHROUG="\033[9m"
+
+# Coloring your life.
+
+# Foreground colors
+GRAY="\033[;2m"
+BLACK="\033[;30m"
+RED="\033[;31m"
+GREEN="\033[;32m"
+YELLOW="\033[;33m"
+BLUE="\033[;34m"
+MAGENTA="\033[;35m"
+CYAN="\033[;36m"
+WHITE="\033[;37m"
+
+# Background colors
+BGBLACK="\033[;40m"
+BGRED="\033[;41m"
+BGGREEN="\033[;42m"
+BGYELLOW="\033[;43m"
+BGBLUE="\033[;44m"
+BGMAGENTA="\033[;45m"
+BGCYAN="\033[;46m"
+BGWHITE="\033[;47m"
+
+#---------------------------- END DECORATIONS TTY -----------------------------<
+
 #------------------------------- FIM-VARIÁVEIS --------------------------------<
 
 
@@ -183,7 +223,7 @@ COMENTÁRIOS SÃO IMPORTANTES!
     Isto por exemplo não é tão certo:
     
     # Bloca que verifica se o usuário é root
-    # se for root ele imprimi uma mensagem para
+    # se for root ele imprime uma mensagem para
     # o usuário.
     # Se não for root o programa continua!
     if test "\$UID" -eq "0"; then
@@ -521,10 +561,10 @@ permissao()
 criar()
 {
     
-    local texto="${vermelho}Preencha todos os dados corretamente!
+    local texto="${RED}Preencha todos os dados corretamente!
 Assim você não perde seu tempo depois.
-O arquivo terá o nome ${branco}nome_do_programa.extensao${fecha}${vermelho}
-e será gerado na pasta atual ou no caminho informado no nome do programa.\n\n${fecha}"
+O arquivo terá o nome ${WHITE}nome_do_programa.extensao${CLOSE}${RED}
+e será gerado na pasta atual ou no caminho informado no nome do programa.\n\n${CLOSE}"
 
     printf %b "$texto"
     i=0
@@ -538,10 +578,10 @@ e será gerado na pasta atual ou no caminho informado no nome do programa.\n\n${
     # Chamando e testando a função para criar template de acordo com os dados passados.
     if base; then
         permissao
-        printf %b "${verde}Concluído com sucesso.\nArquivo gerado: ${dir_template}/${template}${fecha}\n"
+        printf %b "${GREEN}Concluído com sucesso.\nArquivo gerado: ${dir_template}/${template}${CLOSE}\n"
           exit 0
     else
-        printf %b "${vermelho}Não consegui criar o arquivo, tente novamente...\n${fecha}"    
+        printf %b "${RED}Não consegui criar o arquivo, tente novamente...\n${CLOSE}"    
         exit 1
     fi
 }
